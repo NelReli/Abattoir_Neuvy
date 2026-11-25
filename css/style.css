@@ -319,3 +319,20 @@ input[readonly] { opacity: .75; border-bottom-style: dashed; }
 /* Mobile : les 6 etapes tiennent dans la largeur */
 .process li { min-width: 0; }
 @media (max-width: 639px) { .process { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .process li { padding-left: 6px; padding-right: 6px; } .process strong { font-size: .72rem; letter-spacing: .03em; overflow-wrap: anywhere; } }
+
+/* Contact : la poule du logo et ses poussins */
+.famille { display: flex; justify-content: center; align-items: flex-end; gap: 8px; margin: 0 auto 14px; }
+.famille .icon { margin: 0 !important; }
+.famille .poussin { width: 30px; height: auto; flex: none; }
+.famille .poussin.petit { width: 24px; }
+.famille .vers-droite { transform: scaleX(-1); margin-right: 6px; margin-left: 22px; }
+
+/* Avis : file de poussins qui trottinent sous les temoignages */
+.parade { display: flex; justify-content: center; align-items: flex-end; gap: 22px; margin: 40px auto 0; max-width: 360px; padding-bottom: 6px; border-bottom: 2px dotted #c9a24a; }
+.parade .poussin { flex: none; width: 34px; height: auto; transform: scaleX(-1); animation: trotte 1.6s ease-in-out infinite; }
+.parade .poussin:nth-child(2) { width: 28px; animation-delay: .2s; }
+.parade .poussin:nth-child(3) { width: 38px; animation-delay: .4s; }
+.parade .poussin:nth-child(4) { width: 26px; animation-delay: .6s; }
+.parade .poussin:nth-child(5) { width: 32px; animation-delay: .8s; }
+@keyframes trotte { 0%, 60%, 100% { translate: 0 0; } 30% { translate: 0 -7px; } }
+@media (prefers-reduced-motion: reduce) { .parade .poussin { animation: none; } }

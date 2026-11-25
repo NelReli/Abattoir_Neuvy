@@ -208,6 +208,7 @@ def avis_section():
     <img class="avis-icon" src="assets/logo-poule.png" width="46" height="54" alt="" loading="lazy">
     <h2>Avis de nos clients</h2>
     <ul class="avis-list" data-avis>{items}</ul>
+    <div class="parade" aria-hidden="true">{"".join(poussin("vers-droite") for _ in range(5))}</div>
   </div>
 </section>"""
 
@@ -355,11 +356,24 @@ def champ(id_, label, type_="text", extra="", autocomplete=""):
             f'<div class="field-error" id="err-{id_}" role="status"></div></div>')
 
 
+def poussin(cls=""):
+    """Petit poussin dessine (decoratif), tourne vers la gauche par defaut."""
+    return (f'<svg class="poussin {cls}" viewBox="0 0 40 36" aria-hidden="true" focusable="false">'
+            '<path d="M13 29v5m0 0h-4m4 0l3 1M25 29v5m0 0h-4m4 0l3 1" fill="none" stroke="#e8710a" stroke-width="1.8" stroke-linecap="round"/>'
+            '<path d="M12 6c6-2 11 2 12 7 5 0 9-2 13-5 1 8-1 14-5 18-4 4-11 5-17 3C8 27 5 22 6 16 4 11 7 7 12 6Z" fill="#f7b514"/>'
+            '<path d="M18 19c3 4 9 4 13 0" fill="none" stroke="#e09600" stroke-width="1.8" stroke-linecap="round"/>'
+            '<path d="M7 11L1 14l6 2Z" fill="#e8710a"/><circle cx="12" cy="12" r="1.7" fill="#12307d"/></svg>')
+
+
 def contact():
     corps = f"""
 <section class="band visit">
   <div class="wrap">
-    <img class="icon" src="assets/logo-poule.png" width="58" height="68" alt="">
+    <div class="famille">
+      {poussin("vers-droite")}
+      <img class="icon" src="assets/logo-poule.png" width="58" height="68" alt="">
+      {poussin()}{poussin("petit")}
+    </div>
     <h2>Visiter l'abattoir</h2>
     <div class="visit-cols">
       <p><strong>Adresse</strong>Abattoir de Neuvy<br>{c("adresse")}</p>
