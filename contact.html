@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact | Abattoir de Neuvy</title>
+<meta name="description" content="Contactez l'Abattoir de Neuvy, Le Fay, 79130 Neuvy-Bouin, pour une question ou un tarif. Téléphone : 05 49 63 51 30.">
+<meta name="theme-color" content="#fefdfb">
+<link rel="icon" type="image/png" href="assets/logo-poule.png">
+<link rel="stylesheet" href="css/style.css?v=9da95cef">
+<script src="js/main.js?v=9da95cef" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Aller au contenu</a>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="index.html"><img src="assets/logo-poule.png" alt="" width="34" height="40"><span>Abattoir de Neuvy</span></a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav"><span class="sr">Menu</span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    <nav id="nav" class="nav" aria-label="Navigation principale"><a href="index.html">Accueil</a><a href="histoire.html">Notre histoire</a><a href="services.html">Nos services</a><a href="contact.html" aria-current="page">Contact</a></nav>
+    <a class="head-tel" data-cfg-tel href="tel:+33549635130"><span data-cfg="tel">05 49 63 51 30</span></a>
+  </div>
+</header>
+<main id="main">
+
+<section class="band visit">
+  <div class="wrap">
+    <img class="icon" src="assets/logo-poule.png" width="58" height="68" alt="">
+    <h2>Visiter l'abattoir</h2>
+    <div class="visit-cols">
+      <p><strong>Adresse</strong>Abattoir de Neuvy<br><span data-cfg="adresse">Le Fay, 79130 Neuvy-Bouin</span></p>
+      <p><strong>Horaires</strong>Ouvert <span data-cfg="ouverture">de 6 h 00 à 15 h 00</span><br>Abattage <span data-cfg="jours">du lundi au jeudi</span><br>Fermeture : <span data-cfg="fermeture">du 1er au 15 août</span></p>
+    </div>
+    <div class="btn-row center">
+      <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Abattoir+de+Neuvy%2C+Le+Fay%2C+79130+Neuvy-Bouin" rel="noopener" target="_blank">Carte d'accès<span class="sr"> (nouvelle fenêtre)</span></a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="contact-card">
+      <div class="contact-panel" id="formulaire">
+        <h1 class="panel-title">Contact</h1>
+        <p class="panel-line"><a data-cfg-tel href="tel:+33549635130"><span data-cfg="tel">05 49 63 51 30</span></a><span aria-hidden="true">|</span><a data-cfg-mail href="mailto:contact@abattoir-neuvy.fr">contact@abattoir-neuvy.fr</a></p>
+
+        <div>
+          <div id="erreur-envoi" class="error-summary" role="alert" tabindex="-1" hidden>
+            <strong>Votre message n'a pas pu être envoyé.</strong>
+            Appelez-nous au <a data-cfg-tel href="tel:+33549635130"><span data-cfg="tel">05 49 63 51 30</span></a>.
+          </div>
+          <div id="confirmation" class="confirm" role="status" tabindex="-1" hidden>
+            <h2>Merci !</h2>
+            <p><strong>Votre message est bien reçu. Nous vous rappelons sous <span data-cfg="delai">48 h ouvrées</span>.</strong></p>
+            <p>Un e-mail d'accusé de réception vous a été envoyé.</p>
+            <div class="btn-row"><a class="btn btn-ghost" href="index.html">Retour à l'accueil</a></div>
+          </div>
+
+          <form id="form-contact" class="form-clean" novalidate>
+            <div id="resume-erreurs" class="error-summary" role="alert" tabindex="-1" hidden></div>
+            <div class="form-row">
+              <div class="field"><label for="prenom">Prénom <span class="req" aria-hidden="true">*</span></label><input type="text" id="prenom" name="prenom" autocomplete="given-name"  aria-required="true" aria-describedby="err-prenom"><div class="field-error" id="err-prenom" role="status"></div></div>
+              <div class="field"><label for="nom">Nom <span class="req" aria-hidden="true">*</span></label><input type="text" id="nom" name="nom" autocomplete="family-name"  aria-required="true" aria-describedby="err-nom"><div class="field-error" id="err-nom" role="status"></div></div>
+            </div>
+            <div class="form-row">
+              <div class="field"><label for="telephone">Téléphone <span class="req" aria-hidden="true">*</span></label><input type="tel" id="telephone" name="telephone" autocomplete="tel" inputmode="tel" aria-required="true" aria-describedby="err-telephone"><div class="field-error" id="err-telephone" role="status"></div></div>
+              <div class="field"><label for="email">E-mail <span class="req" aria-hidden="true">*</span></label><input type="email" id="email" name="email" autocomplete="email" inputmode="email" aria-required="true" aria-describedby="err-email"><div class="field-error" id="err-email" role="status"></div></div>
+            </div>
+            <div class="field">
+              <label for="message">Message <span class="req" aria-hidden="true">*</span></label>
+              <textarea id="message" name="message" maxlength="2000" aria-required="true" aria-describedby="err-message"></textarea>
+              <div class="field-error" id="err-message" role="status"></div>
+            </div>
+
+            <div class="hp" aria-hidden="true"><label for="site_web">Ne pas remplir</label><input type="text" id="site_web" name="site_web" tabindex="-1" autocomplete="off"></div>
+
+            <div class="send">
+              <label class="consent" for="consentement">
+                <input type="checkbox" id="consentement" name="consentement" aria-describedby="err-consentement">
+                <span>J'accepte que mes données soient utilisées pour traiter ma demande (<a href="confidentialite.html">confidentialité</a>). <span class="req" aria-hidden="true">*</span></span>
+              </label>
+              <div class="field-error" id="err-consentement" role="status"></div>
+              <button class="btn btn-primary btn-big" type="submit">Envoyer</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="contact-photo"><img src="assets/photos/eleveur-cloture.jpg" width="1000" height="662" alt="" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <p class="foot-logo"><img src="assets/logo-complet.png" width="900" height="655" alt="Logo Abattoir de Neuvy : une poule au trait bleu marine et vert" loading="lazy"></p>
+      <div>
+        <h2>Contact</h2>
+        <p>Abattoir de Neuvy<br><span data-cfg="adresse">Le Fay, 79130 Neuvy-Bouin</span><br><a data-cfg-tel href="tel:+33549635130"><span data-cfg="tel">05 49 63 51 30</span></a><br><a data-cfg-mail href="mailto:contact@abattoir-neuvy.fr">contact@abattoir-neuvy.fr</a></p>
+      </div>
+      <div>
+        <h2>Le site</h2>
+        <ul><li><a href="index.html">Accueil</a></li><li><a href="histoire.html">Notre histoire</a></li><li><a href="services.html">Nos services</a></li><li><a href="contact.html">Contact</a></li></ul>
+      </div>
+      <div>
+        <h2>Légal</h2>
+        <ul>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+          <li><a href="confidentialite.html">Confidentialité</a></li>
+        </ul>
+        <p class="foot-bio">Certifié bio Ecocert France</p>
+      </div>
+    </div>
+    <p class="copy">© Abattoir de Neuvy</p>
+  </div>
+</footer>
+<a class="callbar" data-cfg-tel href="tel:+33549635130"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11 11 0 0 0 3.5.56 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.2.2 2.4.57 3.5a1 1 0 0 1-.25 1z"/></svg><span>Appeler le <span data-cfg="tel">05 49 63 51 30</span></span></a>
+</body>
+</html>

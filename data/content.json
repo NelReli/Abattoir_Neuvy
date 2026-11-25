@@ -1,0 +1,23 @@
+{
+  "accroche": "Abattage bio de volailles et de lapins",
+  "accueil_intro": "Un abattoir attaché à une ferme, certifié bio Ecocert France depuis 2001. Nous accueillons les éleveurs des Deux-Sèvres et des environs, avec un seul souci : le bien-être des animaux et la traçabilité de chaque lot.",
+  "histoire_1": "L'Abattoir de Neuvy est une petite structure attachée à une ferme, à Neuvy-Bouin, dans les Deux-Sèvres. Nous travaillons à taille humaine : chaque éleveur est connu, chaque lot est suivi de la réception des animaux jusqu'à la remise des carcasses.",
+  "histoire_2": "Nous sommes certifiés bio par Ecocert France depuis le 28 juin 2001. Cette certification est au cœur de notre métier : nous travaillons avec des éleveurs locaux bio et nous respectons le cahier des charges de l'agriculture biologique.",
+  "histoire_3": "Le bien-être animal guide notre organisation. Le transport est limité, car nous abattons uniquement sur le site de Neuvy-Bouin. Les animaux attendent dans un environnement calme avant l'abattage.",
+  "histoire_4": "De l'élevage à l'assiette, chaque lot est identifié et suivi. Notre travail respecte les normes européennes en matière d'hygiène, de sécurité sanitaire et de protection des animaux.",
+  "services_intro": "Nous prenons en charge vos volailles et vos lapins, de l'abattage au conditionnement. Les tarifs sont communiqués sur demande.",
+  "avis": [
+    {
+      "texte": "Texte d'exemple : ici, l'avis d'un éleveur sur le sérieux et l'accueil de l'équipe.",
+      "auteur": "Nom de l'éleveur / Deux-Sèvres"
+    },
+    {
+      "texte": "Texte d'exemple : ici, un témoignage sur le suivi de chaque lot et la traçabilité.",
+      "auteur": "Nom de l'éleveur / élevage bio"
+    },
+    {
+      "texte": "Texte d'exemple : ici, un avis sur la simplicité à joindre l'abattoir.",
+      "auteur": "Nom de l'éleveur / élevage de lapins"
+    }
+  ]
+}

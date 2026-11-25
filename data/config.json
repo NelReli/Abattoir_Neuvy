@@ -1,0 +1,31 @@
+{
+  "simule": true,
+  "telephone": "05 49 63 51 30",
+  "adresse": "Le Fay, 79130 Neuvy-Bouin",
+  "email_contact": "contact@abattoir-neuvy.fr",
+  "abattage": {
+    "jours": [1, 2, 3, 4],
+    "depot_debut": "06:00",
+    "depot_fin": "08:00",
+    "retrait_debut": "13:00",
+    "retrait_fin": "15:00",
+    "ouverture_debut": "06:00",
+    "ouverture_fin": "15:00",
+    "pas_minutes": 15
+  },
+  "fermeture_annuelle": {
+    "mois": 8,
+    "jour_debut": 1,
+    "jour_fin": 15
+  },
+  "delai_rappel": "48 h ouvrées",
+  "conservation_donnees": "3 ans",
+  "legal": {
+    "raison_sociale": "SARL Abattoir de Neuvy",
+    "siret": "123 456 789 00012",
+    "directeur_publication": "Jean Dupont, gérant",
+    "agrement_sanitaire": "FR 79.195.001 CE",
+    "hebergeur": "À renseigner (hébergeur du site)"
+  },
+  "formulaire_webhook": ""
+}

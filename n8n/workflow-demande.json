@@ -1,0 +1,220 @@
+{
+  "name": "Abattoir de Neuvy - demande de contact",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "abattoir-demande",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "n1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "abattoir-demande"
+    },
+    {
+      "parameters": {
+        "jsCode": "const b = $input.first().json.body || {};\nconst s = (v) => String(v ?? '').trim();\nconst erreurs = [];\nif (!s(b.nom)) erreurs.push('nom');\nif (!s(b.prenom)) erreurs.push('prenom');\nif (!/^0\\d{9}$/.test(s(b.telephone).replace(/[\\s.\\-]/g, ''))) erreurs.push('telephone');\nif (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$/.test(s(b.email))) erreurs.push('email');\nif (!s(b.message) || s(b.message).length > 2000) erreurs.push('message');\nif (b.consentement !== true) erreurs.push('consentement');\nconst recap = [\n  `Nom : ${s(b.nom)}`,\n  `Prénom : ${s(b.prenom)}`,\n  `Téléphone : ${s(b.telephone)}`,\n  `E-mail : ${s(b.email)}`,\n  '',\n  'Message :',\n  s(b.message),\n].join('\\n');\nconst delai = s(b.delai_rappel) || '48 h ouvrées';\nreturn [{ json: {\n  ok: erreurs.length === 0,\n  erreurs,\n  to_eleveur: s(b.email),\n  sujet_abattoir: `[Site] Contact - ${s(b.nom)} ${s(b.prenom)}`,\n  texte_abattoir: recap,\n  sujet_eleveur: 'Abattoir de Neuvy : nous avons bien reçu votre message',\n  texte_eleveur: `Bonjour ${s(b.prenom)} ${s(b.nom)},\\n\\nNous avons bien reçu votre message. Nous vous rappelons sous ${delai}.\\n\\nRécapitulatif :\\n${recap}\\n\\nAbattoir de Neuvy\\nLe Fay, 79130 Neuvy-Bouin\\nTél. : 05 49 63 51 30`\n}}];"
+      },
+      "id": "n2",
+      "name": "Valider et rédiger",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.ok }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ]
+        }
+      },
+      "id": "n3",
+      "name": "Demande valide ?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        480,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "contact@abattoir-neuvy.fr",
+        "toEmail": "contact@abattoir-neuvy.fr",
+        "subject": "={{ $json.sujet_abattoir }}",
+        "emailFormat": "text",
+        "text": "={{ $json.texte_abattoir }}",
+        "options": {
+          "replyTo": "={{ $json.to_eleveur }}"
+        }
+      },
+      "id": "n4",
+      "name": "E-mail à l'abattoir",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        720,
+        -80
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "A_CONFIGURER",
+          "name": "SMTP abattoir"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "contact@abattoir-neuvy.fr",
+        "toEmail": "={{ $('Valider et rédiger').item.json.to_eleveur }}",
+        "subject": "={{ $('Valider et rédiger').item.json.sujet_eleveur }}",
+        "emailFormat": "text",
+        "text": "={{ $('Valider et rédiger').item.json.texte_eleveur }}",
+        "options": {}
+      },
+      "id": "n5",
+      "name": "Accusé de réception à l'éleveur",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        960,
+        -80
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "A_CONFIGURER",
+          "name": "SMTP abattoir"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={ \"ok\": true }",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "n6",
+      "name": "Réponse OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1200,
+        -80
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: false, erreurs: $json.erreurs }) }}",
+        "options": {
+          "responseCode": 400
+        }
+      },
+      "id": "n7",
+      "name": "Réponse erreur",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        720,
+        120
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Valider et rédiger",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Valider et rédiger": {
+      "main": [
+        [
+          {
+            "node": "Demande valide ?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Demande valide ?": {
+      "main": [
+        [
+          {
+            "node": "E-mail à l'abattoir",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Réponse erreur",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "E-mail à l'abattoir": {
+      "main": [
+        [
+          {
+            "node": "Accusé de réception à l'éleveur",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Accusé de réception à l'éleveur": {
+      "main": [
+        [
+          {
+            "node": "Réponse OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

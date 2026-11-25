@@ -1,0 +1,2 @@
+Archivo, Copyright The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)
+Licence : SIL Open Font License 1.1 (https://openfontlicense.org)

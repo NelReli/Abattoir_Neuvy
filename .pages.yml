@@ -1,0 +1,85 @@
+# Administration du site avec Pages CMS (gratuit) : https://pagescms.org
+# Se connecter avec le compte GitHub qui heberge le depot, puis modifier et "Enregistrer".
+media:
+  input: assets
+  output: /assets
+content:
+  - name: horaires
+    label: Horaires, jours et fermeture
+    type: file
+    path: data/config.json
+    format: json
+    fields:
+      - name: telephone
+        label: Téléphone
+        type: string
+      - name: adresse
+        label: Adresse
+        type: string
+      - name: email_contact
+        label: E-mail de réception
+        type: string
+      - name: abattage
+        label: Abattage
+        type: object
+        fields:
+          - name: jours
+            label: Jours d'abattage
+            type: select
+            multiple: true
+            options:
+              values:
+                - { value: 1, label: Lundi }
+                - { value: 2, label: Mardi }
+                - { value: 3, label: Mercredi }
+                - { value: 4, label: Jeudi }
+                - { value: 5, label: Vendredi }
+                - { value: 6, label: Samedi }
+                - { value: 0, label: Dimanche }
+          - { name: depot_debut, label: "Dépôt : début (ex. 06:00)", type: string }
+          - { name: depot_fin, label: "Dépôt : fin (ex. 08:00)", type: string }
+          - { name: retrait_debut, label: "Retrait : début (ex. 13:00)", type: string }
+          - { name: retrait_fin, label: "Retrait : fin (ex. 15:00)", type: string }
+          - { name: ouverture_debut, label: "Ouverture de l'abattoir : début", type: string }
+          - { name: ouverture_fin, label: "Ouverture de l'abattoir : fin", type: string }
+          - { name: pas_minutes, label: "Pas entre deux heures proposées (minutes)", type: number }
+      - name: fermeture_annuelle
+        label: Fermeture annuelle (chaque année)
+        type: object
+        fields:
+          - { name: mois, label: "Mois (1 = janvier ... 12 = décembre)", type: number }
+          - { name: jour_debut, label: "Premier jour", type: number }
+          - { name: jour_fin, label: "Dernier jour", type: number }
+      - { name: delai_rappel, label: "Délai de rappel affiché", type: string }
+      - { name: conservation_donnees, label: "Durée de conservation des données", type: string }
+      - name: legal
+        label: Informations légales
+        type: object
+        fields:
+          - { name: raison_sociale, label: Raison sociale, type: string }
+          - { name: siret, label: SIRET, type: string }
+          - { name: directeur_publication, label: Directeur de publication, type: string }
+          - { name: agrement_sanitaire, label: Numéro d'agrément sanitaire, type: string }
+          - { name: hebergeur, label: Hébergeur du site, type: string }
+      - { name: simule, label: "Afficher l'avertissement [SIMULÉ] sur les pages légales (décocher une fois les vraies valeurs saisies)", type: boolean }
+      - { name: formulaire_webhook, label: "Adresse du webhook n8n (ne pas modifier)", type: string }
+  - name: textes
+    label: Textes des pages
+    type: file
+    path: data/content.json
+    format: json
+    fields:
+      - { name: accroche, label: "Accueil : phrase d'accroche", type: text }
+      - { name: accueil_intro, label: "Accueil : introduction", type: text }
+      - { name: histoire_1, label: "Histoire : paragraphe 1", type: text }
+      - { name: histoire_2, label: "Histoire : paragraphe 2", type: text }
+      - { name: histoire_3, label: "Histoire : paragraphe 3", type: text }
+      - { name: histoire_4, label: "Histoire : paragraphe 4", type: text }
+      - { name: services_intro, label: "Services : introduction", type: text }
+      - name: avis
+        label: "Avis de nos clients (page d'accueil)"
+        type: object
+        list: true
+        fields:
+          - { name: texte, label: "Texte de l'avis", type: text }
+          - { name: auteur, label: "Nom et activité", type: string }
