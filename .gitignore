@@ -1,3 +1,4 @@
 .claude/settings.local.json
 n8n/*credentials*
 .env
+.claude/
