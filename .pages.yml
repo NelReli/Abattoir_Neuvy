@@ -63,6 +63,7 @@ content:
           - { name: hebergeur, label: Hébergeur du site, type: string }
       - { name: simule, label: "Afficher l'avertissement [SIMULÉ] sur les pages légales (décocher une fois les vraies valeurs saisies)", type: boolean }
       - { name: formulaire_webhook, label: "Adresse du webhook n8n (ne pas modifier)", type: string }
+      - { name: url_site, label: "Adresse publique du site (ne pas modifier)", type: string }
   - name: textes
     label: Textes des pages
     type: file

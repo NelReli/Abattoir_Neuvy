@@ -28,3 +28,10 @@ Les e-mails du workflow n8n contiennent l'adresse, le téléphone et `contact@ab
 python -m http.server 8080
 ```
 Ouvrir http://localhost:8080 (le chargement de `data/*.json` exige un serveur, pas un double-clic).
+
+## Référencement et sécurité
+
+- `url_site` (dans `data/config.json`) sert à l'adresse canonique, au partage, à `sitemap.xml`, `llms.txt` et à la page 404. En cas de nom de domaine, la modifier puis relancer `python tools/build.py`. Modifier aussi `allowedOrigins` dans le workflow n8n.
+- `sitemap.xml` est à déclarer dans Google Search Console.
+- Politique de sécurité du contenu : définie dans `tools/build.py` (`CSP`). Un service externe (formulaire Brevo, captcha) doit y être ajouté.
+

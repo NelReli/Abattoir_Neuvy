@@ -5,8 +5,10 @@ Les valeurs de data/config.json et data/content.json sont inscrites dans le HTML
 (affichage sans JavaScript, referencement). Le JS les remet a jour a chaque visite.
 """
 import hashlib
+import html
 import json
 import pathlib
+from urllib.parse import urlparse
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 CFG = json.loads((ROOT / "data/config.json").read_text(encoding="utf-8"))
@@ -49,8 +51,11 @@ V = {
     "agrement": CFG["legal"]["agrement_sanitaire"],
     "hebergeur": CFG["legal"]["hebergeur"],
 }
+# Les textes saisis dans l'administration sont echappes avant d'entrer dans le HTML.
+V = {k: html.escape(str(v), quote=False) for k, v in V.items()}
+SITE_URL = CFG["url_site"].rstrip("/") + "/"
 TEL_HREF = "tel:+33" + CFG["telephone"].replace(" ", "").lstrip("0")
-MAIL = CFG["email_contact"]
+MAIL = html.escape(CFG["email_contact"])
 
 
 def c(key):
@@ -60,7 +65,7 @@ def c(key):
 
 def t(key):
     """Attribut + texte relie a data/content.json."""
-    return f'data-content="{key}"', CT[key]
+    return f'data-content="{key}"', html.escape(CT[key], quote=False)
 
 
 NAV = [("index.html", "Accueil"), ("histoire.html", "Notre histoire"),
@@ -106,25 +111,43 @@ STAMP = ('<div class="stamp"><svg viewBox="0 0 120 120" role="img" aria-label="C
          '</svg></div>')
 
 
-def page(fichier, titre, description, corps, noindex=False):
+# Politique de securite du contenu : seuls les fichiers du site sont charges.
+CSP = ("default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; "
+       "font-src 'self'; connect-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self'")
+
+
+def page(fichier, titre, description, corps, noindex=False, base=""):
     nav = "".join(
         f'<a href="{h}"{" aria-current=\"page\"" if h == fichier else ""}>{n}</a>' for h, n in NAV)
     liens = "".join(f'<li><a href="{h}">{n}</a></li>' for h, n in NAV)
     robots = '<meta name="robots" content="noindex">\n' if noindex else ""
+    url = SITE_URL + ("" if fichier == "index.html" else fichier)
+    balise_base = f'<base href="{base}">\n' if base else ""
+    ancre = f"{fichier}#main" if base else "#main"
+    canonique = "" if noindex else f'<link rel="canonical" href="{url}">\n'
+    partage = "" if noindex else (
+        f'<meta property="og:type" content="website">\n<meta property="og:locale" content="fr_FR">\n'
+        f'<meta property="og:site_name" content="Abattoir de Neuvy">\n'
+        f'<meta property="og:title" content="{titre}">\n<meta property="og:description" content="{description}">\n'
+        f'<meta property="og:url" content="{url}">\n'
+        f'<meta property="og:image" content="{SITE_URL}assets/photos/poules-prairie.jpg">\n'
+        f'<meta name="twitter:card" content="summary_large_image">\n')
     return f"""<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="{CSP}">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+{balise_base}<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{titre}</title>
 <meta name="description" content="{description}">
-{robots}<meta name="theme-color" content="#fefdfb">
+{robots}{canonique}{partage}<meta name="theme-color" content="#fefdfb">
 <link rel="icon" type="image/png" href="assets/logo-poule.png">
 <link rel="stylesheet" href="css/style.css?v={VER}">
 <script src="js/main.js?v={VER}" defer></script>
 </head>
 <body>
-<a class="skip" href="#main">Aller au contenu</a>
+<a class="skip" href="{ancre}">Aller au contenu</a>
 <header class="site-header">
   <div class="wrap bar">
     <a class="brand" href="index.html"><img src="assets/logo-poule.png" alt="" width="34" height="40"><span>Abattoir de Neuvy</span></a>
@@ -139,7 +162,7 @@ def page(fichier, titre, description, corps, noindex=False):
 <footer class="site-footer">
   <div class="wrap">
     <div class="foot-grid">
-      <p class="foot-logo"><img src="assets/logo-complet.png" width="900" height="655" alt="Logo Abattoir de Neuvy : une poule au trait bleu marine et vert" loading="lazy"></p>
+      <p class="foot-logo"><img src="assets/logo-complet.png" width="450" height="328" alt="Logo Abattoir de Neuvy : une poule au trait bleu marine et vert" loading="lazy"></p>
       <div>
         <h2>Contact</h2>
         <p>Abattoir de Neuvy<br>{c("adresse")}<br><a data-cfg-tel href="{TEL_HREF}">{c("tel")}</a><br><a data-cfg-mail href="mailto:{MAIL}">{MAIL}</a></p>
@@ -200,7 +223,7 @@ def story(titre, sous_titre, texte, photo, flip=False, attr="", bouton=""):
 # ---------------------------------------------------------------- Accueil
 def avis_section():
     items = "".join(
-        f'<li><blockquote><p>{a_["texte"]}</p><footer>{a_["auteur"]}</footer></blockquote></li>'
+        f'<li><blockquote><p>{html.escape(a_["texte"])}</p><footer>{html.escape(a_["auteur"])}</footer></blockquote></li>'
         for a_ in CT.get("avis", []))
     return f"""
 <section class="avis">
@@ -213,6 +236,79 @@ def avis_section():
 </section>"""
 
 
+ESPECES = ["poulets", "pintades", "canards", "lapins"]
+PRESTATIONS = ["Abattage de volailles et de lapins", "Préparation et transformation",
+               "Conditionnement sous vide et étiquetage", "Gestion et traçabilité",
+               "Accompagnement des professionnels"]
+
+
+def fiche():
+    """Fiche entreprise lue par les moteurs de recherche et les assistants IA."""
+    ab = CFG["abattage"]
+    en = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    donnees = {
+        "@context": "https://schema.org", "@type": "LocalBusiness", "@id": SITE_URL + "#abattoir",
+        "name": "Abattoir de Neuvy",
+        "description": "Abattoir de volailles et de lapins certifié bio Ecocert France, Deux-Sèvres.",
+        "url": SITE_URL, "logo": SITE_URL + "assets/logo-complet.png",
+        "image": SITE_URL + "assets/photos/poules-prairie.jpg",
+        "telephone": TEL_HREF[4:], "email": CFG["email_contact"],
+        "address": {"@type": "PostalAddress", "streetAddress": "Le Fay", "postalCode": "79130",
+                    "addressLocality": "Neuvy-Bouin", "addressRegion": "Deux-Sèvres", "addressCountry": "FR"},
+        "openingHoursSpecification": {"@type": "OpeningHoursSpecification",
+                                      "dayOfWeek": [en[d] for d in ab["jours"]],
+                                      "opens": ab["ouverture_debut"], "closes": ab["ouverture_fin"]},
+        "knowsAbout": ["Abattage de " + e for e in ESPECES] + ["Agriculture biologique"],
+        "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Prestations",
+                            "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": p}}
+                                                for p in PRESTATIONS]},
+    }
+    return json.dumps(donnees, ensure_ascii=False).replace("<", "\\u003c")
+
+
+def introuvable():
+    corps = """
+<section class="center">
+  <div class="wrap">
+    <h1 class="titre-section">Page introuvable</h1>
+    <p>Cette page n'existe pas ou a changé d'adresse.</p>
+    <div class="btn-row center"><a class="btn btn-primary" href="index.html">Retour à l'accueil</a></div>
+  </div>
+</section>"""
+    return page("404.html", "Page introuvable | Abattoir de Neuvy", "Page introuvable.", corps,
+                noindex=True, base=urlparse(SITE_URL).path)
+
+
+def plan_du_site():
+    urls = "".join(f"  <url><loc>{SITE_URL}{'' if f == 'index.html' else f}</loc></url>\n" for f, _ in NAV)
+    return ('<?xml version="1.0" encoding="UTF-8"?>\n'
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + '</urlset>\n')
+
+
+def llms():
+    ab = CFG["abattage"]
+    return f"""# Abattoir de Neuvy
+
+> Abattoir de volailles et de lapins certifié bio par Ecocert France depuis le 28 juin 2001, à Neuvy-Bouin (Deux-Sèvres).
+
+- Adresse : {CFG["adresse"]}
+- Téléphone : {CFG["telephone"]}
+- E-mail : {CFG["email_contact"]}
+- Espèces : {", ".join(ESPECES)}
+- Prestations : {" ; ".join(PRESTATIONS)}
+- Jours d'abattage : {jours_txt(ab["jours"])}
+- Horaires : de {hh(ab["ouverture_debut"])} à {hh(ab["ouverture_fin"])}
+- Tarifs : sur demande
+
+## Pages
+
+- [Accueil]({SITE_URL})
+- [Notre histoire]({SITE_URL}histoire.html)
+- [Nos services]({SITE_URL}services.html)
+- [Contact]({SITE_URL}contact.html)
+"""
+
+
 def accueil():
     k_acc, v_acc = t("accroche")
     k_int, v_int = t("accueil_intro")
@@ -223,19 +319,19 @@ def accueil():
 <div class="trio">
   <div class="tile">
     {img("nid-oeufs", alt="")}
-    <div class="label"><h3>Notre<br>histoire</h3><a href="histoire.html">L'histoire</a></div>
+    <div class="label"><h2>Notre <br>histoire</h2><a href="histoire.html">L'histoire</a></div>
   </div>
   <div class="tile tile-panel">
     <div>
       {STAMP}
-      <h3>Nos services</h3>
+      <h2>Nos services</h2>
       <p>Abattage, préparation, conditionnement</p>
       <a class="btn btn-primary" href="services.html">Découvrir</a>
     </div>
   </div>
   <div class="tile">
     {img("eleveur-cloture", alt="")}
-    <div class="label"><h3>Nous<br>contacter</h3><a href="contact.html#formulaire">Contact</a></div>
+    <div class="label"><h2>Nous <br>contacter</h2><a href="contact.html#formulaire">Contact</a></div>
   </div>
 </div>
 
@@ -255,14 +351,7 @@ def accueil():
   </div>
 </section>
 
-<script type="application/ld+json">
-{json.dumps({"@context": "https://schema.org", "@type": "LocalBusiness", "name": "Abattoir de Neuvy",
-             "description": "Abattoir de volailles et de lapins certifié bio Ecocert France, Deux-Sèvres.",
-             "telephone": "+33549635130",
-             "address": {"@type": "PostalAddress", "streetAddress": "Le Fay", "postalCode": "79130",
-                         "addressLocality": "Neuvy-Bouin", "addressCountry": "FR"}},
-            ensure_ascii=False)}
-</script>"""
+<script type="application/ld+json">{fiche()}</script>"""
     return page("index.html", "Abattoir de volailles bio en Deux-Sèvres | Abattoir de Neuvy",
                 "Abattoir de volailles et de lapins certifié bio Ecocert France à Neuvy-Bouin (Deux-Sèvres). Contactez-nous en ligne.",
                 corps)
@@ -271,7 +360,7 @@ def accueil():
 # ---------------------------------------------------------------- Histoire
 def histoire():
     p = {k: t(k) for k in ("histoire_1", "histoire_2", "histoire_3", "histoire_4")}
-    corps = hero("poules-prairie", "Notre<br>histoire", petit=True)
+    corps = hero("poules-prairie", "Notre <br>histoire", petit=True)
     corps += story("L'histoire", "Une ferme et un abattoir à taille humaine", p["histoire_1"][1], "eleveur-cloture", attr=p["histoire_1"][0])
     corps += story("Certifié bio", "Ecocert France, depuis le 28 juin 2001", p["histoire_2"][1], "poule-herbe", flip=True, attr=p["histoire_2"][0])
     corps += story("Bien-être animal", "Un environnement calme", p["histoire_3"][1], "canards", attr=p["histoire_3"][0])
@@ -286,7 +375,7 @@ def histoire():
 def services():
     boutons = ('<div class="btn-row">' + BTN_CRENEAU +
                '<a class="btn btn-line" href="contact.html#formulaire">Demander un tarif</a></div>')
-    corps = hero("canards", "Nos<br>services", boutons, petit=True) + f"""
+    corps = hero("canards", "Nos <br>services", boutons, petit=True) + f"""
 
 <section class="center">
   <div class="wrap">
@@ -374,7 +463,7 @@ def contact():
       <img class="icon" src="assets/logo-poule.png" width="58" height="68" alt="">
       {poussin()}{poussin("petit")}
     </div>
-    <h2>Visiter l'abattoir</h2>
+    <h1 class="titre-section">Visiter l'abattoir</h1>
     <div class="visit-cols">
       <p><strong>Adresse</strong>Abattoir de Neuvy<br>{c("adresse")}</p>
       <p><strong>Horaires</strong>Ouvert {c("ouverture")}<br>Abattage {c("jours")}<br>Fermeture : {c("fermeture")}</p>
@@ -389,7 +478,7 @@ def contact():
   <div class="wrap">
     <div class="contact-card">
       <div class="contact-panel" id="formulaire">
-        <h1 class="panel-title">Contact</h1>
+        <h2 class="panel-title">Contact</h2>
         <p class="panel-line"><a data-cfg-tel href="{TEL_HREF}">{c("tel")}</a><span aria-hidden="true">|</span><a data-cfg-mail href="mailto:{MAIL}">{MAIL}</a></p>
 
         <div>
@@ -449,7 +538,7 @@ SIMULE = ('<p class="note-simule" data-simule>Valeurs fictives [SIMULÉ] : à re
 
 def mentions():
     corps = f"""
-<section class="page-title"><div class="wrap"><h2 style="font-size:1.8rem">Mentions légales</h2></div></section>
+<section class="page-title"><div class="wrap"><h1 class="titre-section" style="font-size:1.8rem">Mentions légales</h1></div></section>
 <section style="padding-top:0">
   <div class="wrap prose">
     {SIMULE}
@@ -489,7 +578,7 @@ def mentions():
 
 def confidentialite():
     corps = f"""
-<section class="page-title"><div class="wrap"><h2 style="font-size:1.8rem">Politique de confidentialité</h2></div></section>
+<section class="page-title"><div class="wrap"><h1 class="titre-section" style="font-size:1.8rem">Politique de confidentialité</h1></div></section>
 <section style="padding-top:0">
   <div class="wrap prose">
     {SIMULE}
@@ -518,6 +607,7 @@ def confidentialite():
 if __name__ == "__main__":
     for nom, fn in [("index.html", accueil), ("histoire.html", histoire), ("services.html", services),
                     ("contact.html", contact), ("mentions-legales.html", mentions),
-                    ("confidentialite.html", confidentialite)]:
+                    ("confidentialite.html", confidentialite), ("404.html", introuvable),
+                    ("sitemap.xml", plan_du_site), ("llms.txt", llms)]:
         (ROOT / nom).write_text(fn(), encoding="utf-8")
         print("ok", nom)

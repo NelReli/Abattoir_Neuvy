@@ -1,0 +1,19 @@
+# Abattoir de Neuvy
+
+> Abattoir de volailles et de lapins certifié bio par Ecocert France depuis le 28 juin 2001, à Neuvy-Bouin (Deux-Sèvres).
+
+- Adresse : Le Fay, 79130 Neuvy-Bouin
+- Téléphone : 05 49 63 51 30
+- E-mail : contact@abattoir-neuvy.fr
+- Espèces : poulets, pintades, canards, lapins
+- Prestations : Abattage de volailles et de lapins ; Préparation et transformation ; Conditionnement sous vide et étiquetage ; Gestion et traçabilité ; Accompagnement des professionnels
+- Jours d'abattage : du lundi au jeudi
+- Horaires : de 6 h 00 à 15 h 00
+- Tarifs : sur demande
+
+## Pages
+
+- [Accueil](https://nelreli.github.io/Abattoir_Neuvy/)
+- [Notre histoire](https://nelreli.github.io/Abattoir_Neuvy/histoire.html)
+- [Nos services](https://nelreli.github.io/Abattoir_Neuvy/services.html)
+- [Contact](https://nelreli.github.io/Abattoir_Neuvy/contact.html)

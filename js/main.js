@@ -159,7 +159,8 @@
         motif: "Contact / question",
         nom: val("nom"), prenom: val("prenom"), telephone: val("telephone"), email: val("email"),
         message: val("message"), consentement: true,
-        delai_rappel: c.delai_rappel
+        delai_rappel: c.delai_rappel,
+        site_web: form.elements["site_web"].value, duree_ms: Date.now() - debut
       };
     }
 

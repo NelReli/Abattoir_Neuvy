@@ -27,5 +27,6 @@
     "agrement_sanitaire": "FR 79.195.001 CE",
     "hebergeur": "À renseigner (hébergeur du site)"
   },
-  "formulaire_webhook": ""
+  "formulaire_webhook": "",
+  "url_site": "https://nelreli.github.io/Abattoir_Neuvy/"
 }
