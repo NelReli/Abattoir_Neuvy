@@ -1,0 +1,258 @@
+/* Abattoir de Neuvy - proposition en une page.
+   Couleurs du logo ; Archivo large pour les titres, police systeme pour le texte. */
+@font-face { font-family: "Archivo Large"; src: url("../assets/fonts/archivo-large-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+
+:root {
+  --marine: #12307d;
+  --marine-fonce: #0b1f56;
+  --vert: #5db946;
+  --vert-texte: #2f7d1f;
+  --brume: #eef1f7;
+  --blanc: #fff;
+  --encre: #16213f;
+  --erreur: #8a120c;
+  --titre: "Archivo Large", Arial, sans-serif;
+  --texte: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 76px; -webkit-text-size-adjust: 100%; }
+body { margin: 0; padding-bottom: 76px; font: 400 1rem/1.65 var(--texte); color: var(--encre); background: var(--blanc); }
+img { display: block; max-width: 100%; height: auto; }
+a { color: var(--marine); text-underline-offset: 3px; }
+:focus-visible { outline: 3px solid var(--vert); outline-offset: 3px; }
+h1, h2, h3 { font-family: var(--titre); font-weight: 500; line-height: 1.1; margin: 0 0 .6em; color: var(--marine); }
+h2 { font-size: clamp(1.7rem, 5vw, 2.8rem); }
+h3 { font-size: 1.15rem; }
+p { margin: 0 0 1em; }
+ul, ol { list-style: none; margin: 0; padding: 0; }
+dl, dd { margin: 0; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: -999px; top: 8px; z-index: 100; background: var(--blanc); padding: 12px 16px; }
+.skip:focus { left: 8px; }
+.cadre { width: 100%; max-width: 1160px; margin: 0 auto; padding: 0 20px; }
+section { padding: 64px 0; }
+
+/* En-tete */
+.tete { position: sticky; top: 0; z-index: 50; background: var(--blanc); }
+.tete .cadre { display: flex; align-items: center; justify-content: space-between; min-height: 68px; gap: 16px; }
+.marque { display: flex; align-items: center; gap: 10px; font: 500 .95rem/1.2 var(--titre); text-decoration: none; }
+.menu-btn { width: 48px; height: 48px; display: grid; place-items: center; border: 0; border-radius: 12px; background: var(--brume); color: var(--marine); cursor: pointer; }
+.nav { display: none; position: absolute; left: 0; right: 0; top: 100%; background: var(--blanc); padding: 4px 20px 16px; box-shadow: 0 16px 24px rgba(11, 31, 86, .18); }
+.nav.open { display: block; }
+.nav a { display: flex; align-items: center; min-height: 48px; font-weight: 600; text-decoration: none; }
+.nav a:hover, .tete-tel:hover { color: var(--vert-texte); }
+.tete-tel { display: none; font-weight: 700; text-decoration: none; white-space: nowrap; }
+
+/* Boutons */
+.bouton { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 0 28px; border: 2px solid transparent; border-radius: 999px; font: 700 1rem/1.2 var(--texte); text-decoration: none; text-align: center; cursor: pointer; }
+.bouton.vert { background: var(--vert); color: var(--marine-fonce); }
+.bouton.clair { border-color: var(--blanc); color: var(--blanc); }
+.bouton.clair:hover { background: var(--blanc); color: var(--marine); }
+.bouton.plein { background: var(--marine); color: var(--blanc); width: 100%; }
+.bouton.plein:hover { background: var(--marine-fonce); }
+
+/* Ouverture : la photo, retournee pour garder la poule visible a droite du texte */
+.ouverture { position: relative; isolation: isolate; display: flex; align-items: center; min-height: 600px; padding: 56px 0 170px; color: var(--blanc); background: #3b4a3a; }
+.ouverture > img { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; object-position: 20% 50%; transform: scaleX(-1); }
+.ouverture::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to right, rgba(0, 0, 0, .6), rgba(0, 0, 0, .48) 60%, rgba(0, 0, 0, .3)); }
+.ouverture h1 { color: var(--blanc); font-size: clamp(2.4rem, 11vw, 4rem); line-height: 1.04; margin-bottom: .45em; text-shadow: 0 2px 24px rgba(0, 0, 0, .35); }
+.annonce > p { font-size: 1.15rem; max-width: 30em; text-shadow: 0 1px 12px rgba(0, 0, 0, .5); }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+/* Jours et horaires : trois arches aux couleurs du site */
+.arches { display: grid; gap: 16px; text-align: center; }
+.arches li { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; min-height: 180px; padding: 44px 16px 28px; border-radius: 50% 50% 14px 14px / 70px 70px 14px 14px; }
+.arches h3 { margin: 0 0 8px; color: inherit; font-size: 1.05rem; }
+.arches p { margin: 0; font: 500 clamp(1.5rem, 6.5vw, 1.9rem)/1.25 var(--titre); text-wrap: balance; }
+.arches .jour { background: var(--marine); color: var(--blanc); }
+.arches .depot { background: var(--vert); color: var(--marine-fonce); }
+.arches .retrait { background: var(--brume); color: var(--marine); }
+.ouvert-ferme { margin: 24px 0 0; text-align: center; font-weight: 600; color: var(--marine); }
+
+/* Entre les sections : colline, trace et poussins. Sans script, ils restent poses au sommet. */
+.passage { --colline: 24px; position: relative; height: 0; z-index: 2; }
+.piste { position: absolute; left: 0; right: 0; bottom: -1px; height: calc(var(--colline) + 52px); overflow: hidden; pointer-events: none; }
+.colline, .trace { position: absolute; left: 0; bottom: 0; width: 100%; height: var(--colline); overflow: visible; }
+.colline { fill: var(--blanc); }
+.vers-brume .colline { fill: var(--brume); }
+.vers-vert .colline { fill: var(--vert); }
+.vers-marine .colline { fill: var(--marine); }
+.trace { bottom: 4px; fill: none; stroke: #e8710a; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1 11; }
+.bande { position: absolute; bottom: calc(var(--colline) - 2px); left: 50%; display: flex; align-items: flex-end; gap: 16px; transform: translateX(-50%); }
+.poussin { flex: none; width: 36px; height: auto; transform: scaleX(-1); }
+.poussin:nth-child(2n) { width: 28px; }
+.poussin:nth-child(3n) { width: 40px; }
+.retour .poussin { transform: none; }
+
+/* Especes */
+.especes ul { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.especes li img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 999px 999px 14px 14px; }
+.especes li span { display: block; margin-top: 10px; text-align: center; font: 500 1.05rem/1.3 var(--titre); color: var(--marine); }
+
+/* L'abattoir */
+.abattoir { background: var(--brume); }
+.abattoir .cadre { display: grid; gap: 40px; }
+.presentation img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 14px; margin-top: 24px; }
+.chapitres article + article { margin-top: 28px; }
+.chapitres p { max-width: 34em; margin: 0; }
+
+/* Services */
+.services { background: var(--vert); color: var(--marine-fonce); }
+.services h2 { color: var(--marine-fonce); }
+.services dl div { padding: 20px 0; border-top: 1px solid rgba(11, 31, 86, .45); }
+.services dt { font: 500 1.2rem/1.3 var(--titre); margin-bottom: 6px; }
+.tarifs { margin: 24px 0 0; font-weight: 700; font-size: 1.1rem; }
+.tarifs a { color: var(--marine-fonce); margin-left: 6px; }
+
+/* Processus : une vraie suite d'etapes */
+.processus ol { counter-reset: etape; }
+.processus li { counter-increment: etape; position: relative; padding: 0 0 28px 64px; min-height: 44px; }
+.processus li::before { content: counter(etape); position: absolute; left: 0; top: 0; z-index: 1; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; background: var(--marine); color: var(--blanc); font-family: var(--titre); }
+.processus li:not(:last-child)::after { content: ""; position: absolute; left: 20px; top: 44px; bottom: 0; width: 4px; background: var(--vert); }
+.processus strong { display: block; color: var(--marine); font-size: 1.05rem; }
+.processus li span { display: block; }
+
+/* Avis */
+.avis { background: var(--brume); }
+.avis ul { display: grid; gap: 28px; }
+.avis blockquote { margin: 0; }
+.avis blockquote p { font-size: 1.15rem; margin-bottom: .5em; }
+.avis footer { font-weight: 700; color: var(--vert-texte); }
+
+/* Contact */
+.contact { background: var(--marine); color: var(--blanc); }
+.contact .cadre { display: grid; gap: 40px; }
+.venir h2 { color: var(--blanc); }
+.venir a:not(.bouton) { color: var(--blanc); }
+.grand-tel { font: 500 clamp(1.8rem, 7vw, 2.6rem)/1.2 var(--titre); margin-bottom: .2em; }
+.grand-tel a { text-decoration: none; }
+.venir .bouton { margin-top: 8px; }
+.ecrire { background: var(--blanc); color: var(--encre); padding: 28px 20px; border-radius: 20px; }
+.duo { display: grid; column-gap: 16px; }
+.field { margin-bottom: 14px; }
+label { display: block; font-weight: 600; margin-bottom: 4px; }
+input:not([type="checkbox"]), textarea { width: 100%; min-height: 48px; padding: 10px 14px; font: inherit; color: inherit; background: var(--brume); border: 2px solid transparent; border-radius: 10px; }
+textarea { resize: vertical; }
+input:focus, textarea:focus { border-color: var(--marine); background: var(--blanc); }
+[aria-invalid="true"] { border-color: var(--erreur) !important; }
+.req, .field-error { color: var(--erreur); }
+.field-error { font-size: .9rem; font-weight: 600; }
+.resume { border: 2px solid var(--erreur); border-radius: 10px; padding: 12px 14px; margin-bottom: 18px; }
+.resume a { color: var(--erreur); }
+.consentement { display: flex; gap: 12px; align-items: flex-start; font-weight: 400; margin: 6px 0; }
+.consentement input { width: 24px; height: 24px; flex: none; accent-color: var(--marine); }
+.ecrire .bouton { margin-top: 14px; }
+/* Cibles tactiles d'au moins 44 px pour les liens isoles */
+.marque { min-height: 48px; }
+.grand-tel a, .venir a[data-cfg-mail], .tarifs a, .pied a { display: inline-flex; align-items: center; min-height: 44px; }
+.hp { position: absolute; left: -9999px; }
+[hidden] { display: none !important; }
+
+/* Pied et barre d'appel */
+.pied { padding: 24px 0; font-size: .95rem; }
+.pied .cadre { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; }
+.pied p { margin: 0; }
+.pied a { margin-right: 20px; }
+.barre-appel { position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 60; min-height: 54px; display: flex; align-items: center; justify-content: center; gap: 10px; border-radius: 999px; background: var(--vert); color: var(--marine-fonce); font-weight: 800; text-decoration: none; box-shadow: 0 6px 18px rgba(11, 31, 86, .35); }
+
+/* Le titre se pose lettre apres lettre */
+.mot { display: inline-block; white-space: nowrap; }
+.lettre { display: inline-block; transform-origin: 50% 100%; animation: poser .75s cubic-bezier(.3, .7, .4, 1) backwards; animation-delay: calc(var(--i) * 35ms); }
+@keyframes poser {
+  0% { opacity: 0; translate: 0 -.9em; rotate: -14deg; }
+  60% { opacity: 1; translate: 0 .05em; rotate: 3deg; scale: 1.12 .84; }
+  80% { translate: 0 -.07em; rotate: -1deg; scale: .96 1.05; }
+}
+
+/* Tampon sur la photo */
+.tampon { position: absolute; bottom: 44px; right: 24px; width: 112px; height: 112px; margin: 0; display: grid; place-content: center; text-align: center; border-radius: 50%; background: var(--vert); color: var(--marine-fonce); border: 2px dashed var(--marine-fonce); box-shadow: 0 0 0 6px var(--vert); rotate: -9deg; font: 700 .85rem/1.2 var(--texte); }
+.tampon strong { display: block; font: 500 1.8rem/1.1 var(--titre); }
+
+/* Avis : des billets pendus a une corde a linge */
+.avis ul { padding-top: 14px; }
+.avis li { position: relative; background: var(--blanc); padding: 34px 20px 20px; border-radius: 6px; box-shadow: 0 10px 22px rgba(11, 31, 86, .14); rotate: -1.2deg; transform-origin: 50% 0; }
+.avis li:nth-child(2n) { rotate: 1.4deg; }
+.avis li::before { content: ""; position: absolute; left: calc(50% - 8px); top: -16px; width: 16px; height: 44px; border-radius: 5px; background: linear-gradient(90deg, #d9a760 0 44%, #8a5d28 44% 56%, #c8924a 56%); }
+.avis li::after { content: ""; position: absolute; left: calc(50% - 11px); top: -2px; width: 22px; height: 5px; border-radius: 3px; background: #5c6578; }
+
+/* Elements qui reagissent au pointeur */
+.bouton { transition: translate .2s, box-shadow .2s; }
+.bouton:hover { translate: 0 -3px; box-shadow: 0 6px 0 rgba(11, 31, 86, .45); }
+.bouton:active { translate: 0 1px; box-shadow: none; }
+.especes li { transition: translate .35s cubic-bezier(.3, 1.6, .5, 1), rotate .35s cubic-bezier(.3, 1.6, .5, 1); }
+.especes li:hover { translate: 0 -10px; rotate: -2.5deg; }
+.especes li:nth-child(2n):hover { rotate: 2.5deg; }
+
+/* Apparitions au defilement (classe .anime posee par le script) */
+.anime [data-reveal]:not(.vu) > li, .anime .tampon:not(.vu) { opacity: 0; }
+[data-reveal] > li { --i: 0; }
+[data-reveal] > li:nth-child(2) { --i: 1; }
+[data-reveal] > li:nth-child(3) { --i: 2; }
+[data-reveal] > li:nth-child(4) { --i: 3; }
+[data-reveal] > li:nth-child(5) { --i: 4; }
+[data-reveal] > li:nth-child(6) { --i: 5; }
+.anime .especes .vu > li, .anime .arches.vu > li { animation: tomber .85s cubic-bezier(.3, .7, .4, 1) backwards; animation-delay: calc(var(--i) * 140ms); }
+@keyframes tomber {
+  0% { opacity: 0; translate: 0 -70px; rotate: -9deg; }
+  60% { opacity: 1; translate: 0 8px; rotate: 3deg; scale: 1.04 .95; }
+  80% { translate: 0 -4px; rotate: -1deg; }
+}
+.anime .avis .vu > li { animation: balancer 1.5s ease-out backwards; animation-delay: calc(var(--i) * 160ms); }
+@keyframes balancer {
+  0% { opacity: 0; rotate: -12deg; }
+  20% { opacity: 1; rotate: 8deg; }
+  45% { rotate: -5deg; }
+  70% { rotate: 2.5deg; }
+}
+.anime .processus .vu > li { animation: venir .4s ease-out backwards; animation-delay: calc(var(--i) * 260ms); }
+.anime .processus .vu > li::before { animation: tamponner .5s cubic-bezier(.3, 1.5, .5, 1) backwards; animation-delay: calc(var(--i) * 260ms); }
+.anime .processus .vu > li::after { transform-origin: top; animation: tirer-bas .26s linear backwards; animation-delay: calc(var(--i) * 260ms + 200ms); }
+@keyframes venir { from { opacity: 0; } }
+@keyframes tamponner { from { scale: 2.2; rotate: -30deg; opacity: 0; } }
+@keyframes tirer-bas { from { scale: 1 0; } }
+@keyframes tirer-droite { from { scale: 0 1; } }
+.anime .tampon.vu { animation: tamponner .6s .25s cubic-bezier(.3, 1.4, .5, 1) backwards; }
+
+@media (min-width: 640px) {
+  .duo { grid-template-columns: 1fr 1fr; }
+  .especes ul { grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .ecrire { padding: 36px; }
+  .tampon { width: 140px; height: 140px; right: 48px; font-size: 1rem; }
+  .tampon strong { font-size: 2.3rem; }
+}
+
+@media (min-width: 960px) {
+  body { padding-bottom: 0; }
+  section { padding: 96px 0; }
+  .passage { --colline: 48px; }
+    .menu-btn, .barre-appel { display: none; }
+  .nav { display: flex; position: static; gap: 32px; padding: 0; box-shadow: none; }
+  .tete-tel { display: block; }
+  .ouverture { min-height: 640px; padding: 72px 0 110px; }
+  .ouverture > img { object-position: 30% 40%; }
+  .ouverture::after { background: linear-gradient(to right, rgba(0, 0, 0, .55), rgba(0, 0, 0, .34) 50%, rgba(0, 0, 0, 0) 80%); }
+  .ouverture h1 { font-size: clamp(3rem, 5.2vw, 4.8rem); max-width: 7.8em; }
+  .tampon { bottom: 80px; }
+  .abattoir .cadre, .contact .cadre { grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; }
+  .presentation { position: sticky; top: 100px; }
+  .services dl div { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: baseline; }
+  .services dt { margin: 0; }
+  .processus ol { display: grid; grid-template-columns: repeat(6, 1fr); }
+  .processus li { padding: 64px 16px 0 0; }
+  .processus li:not(:last-child)::after { left: 44px; right: 0; top: 20px; bottom: auto; width: auto; height: 4px; }
+  .processus strong { font-size: 1rem; overflow-wrap: anywhere; }
+  .arches { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .arches li { min-height: 320px; padding: 80px 24px 48px; border-radius: 999px 999px 14px 14px; }
+  .arches h3 { font-size: 1.25rem; }
+  .arches p { font-size: clamp(1.8rem, 2.6vw, 2.4rem); }
+  .avis ul { position: relative; grid-template-columns: repeat(3, 1fr); gap: 48px; align-items: start; }
+  .avis ul::before { content: ""; position: absolute; left: -20px; right: -20px; top: 18px; border-top: 3px solid #8a93ab; }
+  .processus li:not(:last-child)::after { transform-origin: left; }
+  .anime .processus .vu > li::after { transform-origin: left; animation-name: tirer-droite; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .bouton, .especes li { transition: none; }
+}
